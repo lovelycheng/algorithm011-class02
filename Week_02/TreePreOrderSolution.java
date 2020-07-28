@@ -2,9 +2,7 @@ package Week_02;
 
 import com.sun.source.tree.Tree;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -15,26 +13,27 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class TreePreOrderSolution {
 
-    public List<Integer> preOrder(TreeNode treeNode) {
-
-        Queue<TreeNode> queue = new LinkedBlockingQueue<>();
-        List<Integer> list = new ArrayList<>();
-        TreeNode curr = treeNode;
-        while (curr != null || !queue.isEmpty()) {
+    public List<Integer> preOrderUseStack(TreeNode root) { // 栈的迭代算法的问题是 右边的子树都是最后才遍历的。curr = curr.left
+        // 限制了能先获得左边数据脊的数据，能满足 pre｜in - order
+        // 构造 左右中的反序 - 中右左
+        Stack<TreeNode> stack = new Stack<>();
+        List<Integer> list = new LinkedList<>();
+        TreeNode curr = root;
+        while (curr != null || !stack.isEmpty()) {
 
             while(curr != null){
-                queue.add(curr);
-                curr = curr.left;
+                list.add(0,curr.val);// 中
+                stack.push(curr);
+                curr = curr.right;
             }
 
-            TreeNode node = queue.poll();
-            list.add(node.val);
-            curr = curr.right;
+            TreeNode node = stack.pop();
+            curr = node.left;
 
         }
 
         return list;
     }
-
-
 }
+
+
